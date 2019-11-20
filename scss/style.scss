@@ -8,14 +8,15 @@ $black: #000000;
 $darken: #232931;
 
 //$primary: #0075f6;
-$primary: #a200ff;
+//$primary: #a200ff;
+$primary: #00b1cc;
 //$secondary: #a0f669;
 $secondary: #0075f6;
 
 
 
 @mixin border-radius($radius) {
-  -webkit-border-radius: $radius;
+  -webkit-border-radius: $radius; 
      -moz-border-radius: $radius;
       -ms-border-radius: $radius;
           border-radius: $radius;
@@ -25,7 +26,7 @@ $secondary: #0075f6;
     -moz-transition:    all $transition ease;
     -o-transition:      all $transition ease;
     -webkit-transition: all $transition ease;
-    -ms-transition: 		all $transition ease;
+    -ms-transition: 	all $transition ease;
     transition:         all $transition ease;
 }
 
