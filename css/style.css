@@ -10225,6 +10225,11 @@ h1, h2, h3, h4, h5,
   color: #000000;
 }
 
+.owl-carousel .owl-stage, .owl-carousel.owl-drag .owl-item {
+  -ms-touch-action: auto;
+  touch-action: auto;
+}
+
 .bg-light {
   background: #f8f9fa !important;
 }
