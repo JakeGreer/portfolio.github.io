@@ -30,8 +30,8 @@
 	// loader
 	var loader = function() {
 		setTimeout(function() { 
-			if($('#ftco-loader').length > 0) {
-				$('#ftco-loader').removeClass('show');
+			if($('#jg-loader').length > 0) {
+				$('#jg-loader').removeClass('show');
 			}
 		}, 1);
 	};
@@ -49,7 +49,7 @@
 
 			event.preventDefault();
 
-			if ( $('#ftco-nav').is(':visible') ) {
+			if ( $('#jg-nav').is(':visible') ) {
 				$(this).removeClass('active');
 			} else {
 				$(this).addClass('active');	
@@ -60,13 +60,23 @@
 		});
 
 	};
-	burgerMenu();
+    burgerMenu();
+    
+    // Modals
+    var modals = function() {
+
+        $('body').on('click', '.modal-toggle', function(event) {
+
+            event.preventDefault();
+            var id = event.currentTarget.id;
+        })
+    }
 
 
 	var onePageClick = function() {
 
 
-		$(document).on('click', '#ftco-nav a[href^="#"]', function (event) {
+		$(document).on('click', '#jg-nav a[href^="#"]', function (event) {
 	    event.preventDefault();
 
 	    var href = $.attr(this, 'href');
@@ -138,7 +148,7 @@
 		$(window).scroll(function(){
 			var $w = $(this),
 					st = $w.scrollTop(),
-					navbar = $('.ftco_navbar'),
+					navbar = $('.jg_navbar'),
 					sd = $('.js-scroll-wrap');
 
 			if (st > 150) {
@@ -177,15 +187,14 @@
 
 	var counter = function() {
 		
-		$('#section-counter, .hero-wrap, .ftco-counter').waypoint( function( direction ) {
+		$('#section-counter, .hero-wrap, .jg-counter').waypoint( function( direction ) {
 
-			if( direction === 'down' && !$(this.element).hasClass('ftco-animated') ) {
+			if( direction === 'down' && !$(this.element).hasClass('jg-animated') ) {
 
 				var comma_separator_number_step = $.animateNumber.numberStepFactories.separator(',')
 				$('.number').each(function(){
 					var $this = $(this),
 						num = $this.data('number');
-						console.log(num);
 					$this.animateNumber(
 					  {
 					    number: num,
@@ -204,27 +213,27 @@
 
 	var contentWayPoint = function() {
 		var i = 0;
-		$('.ftco-animate').waypoint( function( direction ) {
+		$('.jg-animate').waypoint( function( direction ) {
 
-			if( direction === 'down' && !$(this.element).hasClass('ftco-animated') ) {
+			if( direction === 'down' && !$(this.element).hasClass('jg-animated') ) {
 				
 				i++;
 
 				$(this.element).addClass('item-animate');
 				setTimeout(function(){
 
-					$('body .ftco-animate.item-animate').each(function(k){
+					$('body .jg-animate.item-animate').each(function(k){
 						var el = $(this);
 						setTimeout( function () {
 							var effect = el.data('animate-effect');
 							if ( effect === 'fadeIn') {
-								el.addClass('fadeIn ftco-animated');
+								el.addClass('fadeIn jg-animated');
 							} else if ( effect === 'fadeInLeft') {
-								el.addClass('fadeInLeft ftco-animated');
+								el.addClass('fadeInLeft jg-animated');
 							} else if ( effect === 'fadeInRight') {
-								el.addClass('fadeInRight ftco-animated');
+								el.addClass('fadeInRight jg-animated');
 							} else {
-								el.addClass('fadeInUp ftco-animated');
+								el.addClass('fadeInUp jg-animated');
 							}
 							el.removeClass('item-animate');
 						},  k * 50, 'easeInOutExpo' );
@@ -237,37 +246,6 @@
 		} , { offset: '95%' } );
 	};
 	contentWayPoint();
-
-	// magnific popup
-	$('.image-popup').magnificPopup({
-    type: 'image',
-    closeOnContentClick: true,
-    closeBtnInside: false,
-    fixedContentPos: true,
-    mainClass: 'mfp-no-margins mfp-with-zoom', // class to remove default margin from left and right side
-     gallery: {
-      enabled: true,
-      navigateByImgClick: true,
-      preload: [0,1] // Will preload 0 - before current, and 1 after the current image
-    },
-    image: {
-      verticalFit: true
-    },
-    zoom: {
-      enabled: true,
-      duration: 300 // don't foget to change the duration also in CSS
-    }
-  });
-
-  $('.popup-youtube, .popup-vimeo, .popup-gmaps').magnificPopup({
-    disableOn: 700,
-    type: 'iframe',
-    mainClass: 'mfp-fade',
-    removalDelay: 160,
-    preloader: false,
-
-    fixedContentPos: false
-  });
 
 
 
