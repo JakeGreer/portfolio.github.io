@@ -276,7 +276,7 @@
 		console.log(err);
 	}
 	
-	form.addEventListener('submit', function (e) {
+	form.on('submit', function (e) {
 		e.preventDefault()
 		$('#emailModal').modal('show');
 
