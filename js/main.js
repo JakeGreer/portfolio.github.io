@@ -283,6 +283,8 @@
 		results.html('Sending');
 		submit.disabled = true;
 		
+		console.log("This: ", this)
+		console.log('Form: ', form)
 		const payload = {
 			name: form.name.value,
 			email: form.email.value,
