@@ -283,12 +283,16 @@
 		results.html('Sending');
 		submit.disabled = true;
 		
-		console.log("This: ", this)
-		console.log('Form: ', form)
+		var inputs = $(this).serializeArray();
+		var values = {};
+		$.each(values, function(k, v){
+			inputs[v.name]= v.value;
+		});
+
 		const payload = {
-			name: form.name.value,
-			email: form.email.value,
-			content: form.message.value
+			name: values.name,
+			email: values.email,
+			content: values.message
 		}
 		post(url, payload, function (err, res) {
 			if (err) { return error(err) }
