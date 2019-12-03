@@ -51,18 +51,8 @@
 		});
 
 	};
-    burgerMenu();
-    
-    // Modals
-    var modals = function() {
-
-        $('body').on('click', '.modal-toggle', function(event) {
-
-            event.preventDefault();
-            var id = event.currentTarget.id;
-        })
-    }
-
+	burgerMenu();
+	
 
 	var onePageClick = function() {
 
@@ -243,44 +233,12 @@
 	contentWayPoint();
 
 	const form = $('#contactForm');
-	const url = 'https://{id}.execute-api.{region}.amazonaws.com/{stage}/email/send';
-	const results = $('#results');
+	const url = 'https://jdhwr8oog1.execute-api.us-west-2.amazonaws.com/alpha/contact-us';
 	const submit = $('#submit');
-	
-	function post(url, body, callback) {
-		var req = new XMLHttpRequest();
-		req.open("POST", url, true);
-		req.setRequestHeader("Content-Type", "application/json");
-		req.addEventListener("load", function () {
-			if (req.status < 400) {
-				callback(null, JSON.parse(req.responseText));
-			} else {
-				callback(new Error("Request failed: " + req.statusText));
-			}
-		});
-		req.send(JSON.stringify(body));
-	}
-
-	function success () {
-		results.html('Thanks for sending me a message! I\'ll get in touch with you ASAP.');
-		submit.disabled = false;
-		submit.blur();
-		form.name.focus();
-		form.name.value = '';
-		form.email.value = '';
-		form.message.value = '';
-	}
-	function error (err) {
-		results.html('There was an error with sending your message, hold up until I fix it. Thanks for waiting.');
-		submit.disabled = false;
-		console.log(err);
-	}
 	
 	form.on('submit', function (e) {
 		e.preventDefault()
-		$('#emailModal').modal('show');
 
-		results.html('Sending');
 		submit.disabled = true;
 		
 		var inputs = $(this).serializeArray();
@@ -291,13 +249,33 @@
 
 		const payload = {
 			name: values.name,
+			phone: values.subject,
 			email: values.email,
-			content: values.message
+			desc: values.message
 		}
-		post(url, payload, function (err, res) {
-			if (err) { return error(err) }
-			success();
-		})
+
+		console.log("payload: ", payload)
+
+		$.ajax({
+			type: "POST",
+			url : url,
+			dataType: "json",
+			crossDomain: "true",
+			contentType: "application/json; charset=utf-8",
+			data: JSON.stringify(payload),
+			success: function (response) {
+				console.log("Response: ", response)
+			  	// clear form and show a success message
+			  	form.trigger('reset');
+		  		//location.reload();
+			},
+			error: function (error) {
+				console.log(error);
+			 	// show an error message
+			  	alert("UnSuccessfull");
+		}});
+
+		
 	})
 
 
