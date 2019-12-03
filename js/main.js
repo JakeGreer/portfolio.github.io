@@ -232,53 +232,54 @@
 	};
 	contentWayPoint();
 
-	const form = $('#contactForm');
-	const url = 'https://jdhwr8oog1.execute-api.us-west-2.amazonaws.com/alpha/contact-us';
-	const submit = $('#submit');
+
+    var handleFormSubmit = function() {
+
+        const form = $('#contactForm');
+	    const url = 'https://jdhwr8oog1.execute-api.us-west-2.amazonaws.com/alpha/contact-us';
+	    const submit = $('#submit');
 	
-	form.on('submit', function (e) {
-		e.preventDefault()
+        form.on('submit', function (e) {
+            e.preventDefault()
 
-		submit.disabled = true;
-		
-		var inputs = $(this).serializeArray();
-		var values = {};
-		$.each(values, function(k, v){
-			inputs[v.name]= v.value;
-		});
+            submit.disabled = true;
+            
+            var inputs = $(this).serializeArray();
 
-		const payload = {
-			name: values.name,
-			phone: values.subject,
-			email: values.email,
-			desc: values.message
-		}
+            var values = {};
+            $.each(inputs, function(k, v){
+                values[v.name] = v.value;
+            });
 
-		console.log("payload: ", payload)
+            const payload = {
+                name: values.name,
+                subject: values.subject,
+                email: values.email,
+                phone: values.phone,
+                message: values.message
+            }
 
-		$.ajax({
-			type: "POST",
-			url : url,
-			dataType: "json",
-			crossDomain: "true",
-			contentType: "application/json; charset=utf-8",
-			data: JSON.stringify(payload),
-			success: function (response) {
-				console.log("Response: ", response)
-			  	// clear form and show a success message
-			  	form.trigger('reset');
-		  		//location.reload();
-			},
-			error: function (error) {
-				console.log(error);
-			 	// show an error message
-			  	alert("UnSuccessfull");
-		}});
-
-		
-	})
-
-
+            $.ajax({
+                type: "POST",
+                url : url,
+                dataType: "json",
+                crossDomain: "true",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(payload),
+                success: function (response) {
+                    $('#emailModal').modal('show');
+                    // clear form and show a success message
+                    form.trigger('reset');
+                    //location.reload();
+                },
+                error: function (error) {
+                    console.log(error);
+                    // show an error message
+                    alert("UnSuccessfull");
+            }});
+        })
+    }
+    handleFormSubmit();
 
 })(jQuery);
 
