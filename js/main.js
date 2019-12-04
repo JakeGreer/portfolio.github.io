@@ -251,6 +251,8 @@
                 values[v.name] = v.value;
             });
 
+            console.log("values: ", values);
+
             const payload = {
                 name: values.name,
                 subject: values.subject,
