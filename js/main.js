@@ -57,9 +57,9 @@
 	var onePageClick = function() {
 
 
-		$(document).on('click', '#jg-nav a[href^="#"]', function (event) {
+		$(document).on('click', '.nav-item a[href^="#"]', function (event) {
 			event.preventDefault();
-			//close menu
+			//close menu if open for mobile
 			$('#jg-nav').removeClass('show');
 
 			var href = $.attr(this, 'href');
@@ -250,8 +250,6 @@
             $.each(inputs, function(k, v){
                 values[v.name] = v.value;
             });
-
-            console.log("values: ", values);
 
             const payload = {
                 name: values.name,
