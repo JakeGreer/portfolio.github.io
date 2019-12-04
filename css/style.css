@@ -11070,6 +11070,38 @@ textarea.form-control {
   box-shadow: none !important;
   font-size: 15px;
 }
+#emailModal .modal-header {
+  min-height: 10em;
+  background-color: #00b1cc;
+}
+#emailModal .modal-header button {
+  position: absolute;
+  right: 1em;
+  opacity: 0.8;
+}
+#emailModal .modal-header h5, #emailModal .modal-header span {
+  color: #fff !important;
+}
+#emailModal .modal-header #plane-trail {
+  overflow: visible;
+  transform: translateX(-40px) scale(0.8);
+  stroke-dasharray: 15;
+  animation: dash 15s infinite linear;
+  animation-direction: reverse;
+}
+#emailModal .modal-header .plane-icon {
+  height: 45px;
+  position: absolute;
+  right: 5em;
+  transform: rotate(20deg);
+  top: 0em;
+}
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: 300;
+  }
+}
 .block-21 .blog-img {
   display: block;
   height: 80px;

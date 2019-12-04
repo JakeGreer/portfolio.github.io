@@ -270,14 +270,11 @@
                 data: JSON.stringify(payload),
                 success: function (response) {
                     $('#emailModal').modal('show');
-                    // clear form and show a success message
                     form.trigger('reset');
-                    //location.reload();
                 },
                 error: function (error) {
                     console.log(error);
-                    // show an error message
-                    alert("UnSuccessfull");
+                    alert("Oops something went wrong with the mail server! Email me at jakegreer93@gmail.com");
             }});
         })
     }

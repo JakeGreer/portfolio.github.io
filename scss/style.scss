@@ -1642,6 +1642,41 @@ textarea.form-control {
 	}
 }
 
+//### Modals
+#emailModal {
+    .modal-header {
+        min-height: 10em;
+        background-color: $primary;
+        button {
+            position: absolute;
+            right: 1em;
+            opacity: 0.8;
+        }
+        h5, span {
+            color: #fff!important;
+        }
+        #plane-trail {
+            overflow: visible;
+            transform: translateX(-40px) scale(0.8);
+            stroke-dasharray: 15;
+            animation: dash 15s infinite linear;
+            animation-direction: reverse;
+        }
+        .plane-icon {
+            height: 45px;
+            position: absolute;
+            right: 5em;
+            transform: rotate(20deg);
+            top: 0em;
+        }
+    }
+}
+
+@keyframes dash {
+    to {
+      stroke-dashoffset: 300;
+    }
+  }
 
 //### .block-21
 .block-21 {
