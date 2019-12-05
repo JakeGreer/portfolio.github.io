@@ -276,7 +276,11 @@
             }});
         })
     }
-    handleFormSubmit();
+	handleFormSubmit();
+	
+	// validateFormFields(payload) {
+
+	// }
 
 })(jQuery);
 
