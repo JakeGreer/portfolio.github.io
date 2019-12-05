@@ -232,43 +232,46 @@
 	};
 	contentWayPoint();
 
+	var handleBlur = function() {
+		
+		$(".form-control").on('blur', function(e) {
+			var name = e.target.name;
+			var value = e.target.value;
+			var errors = validateFormFields({[name]: value});
+			console.log("Blur: ", errors)
+			showFormErrors(errors, e)
+		})
+	}
+	handleBlur();
 
+	
     var handleFormSubmit = function() {
 
         var $form = $('#contactForm');
-        var $submit = $('#submit');
-        var $name = $("#nameField");
-        var $email = $("#emailField");
-        var $subject = $("#subjectField");
-        var $message = $("#messageField");
+		var $submit = $('#submit');
+		var $name = $("#nameField");
+		var $email = $("#emailField");
+		var $subject = $("#subjectField");
+		var $message = $("#messageField");
 	    const url = 'https://jdhwr8oog1.execute-api.us-west-2.amazonaws.com/alpha/contact-us';
 	
         $form.on('submit', function (e) {
             e.preventDefault()
-
             $submit.disabled = true;
             
             const payload = {
-                name: $name.val(),
-                subject: $subject.val(),
-                email: $email.val(),
-                message: $message.val()
+                name: $name.val().trim(),
+                subject: $subject.val().trim(),
+                email: $email.val().trim(),
+                message: $message.val().trim()
             }
 
-            var errors = validateFormFields(payload);
-            if(!$.isEmptyObject(errors)) {
-                var keys = Object.keys(errors);
-                keys.forEach(function(e) {
-                    $("#"+e+"Field").addClass('is-invalid');
-                })
-                return false;
-            }
-            else {
-                $name.removeClass('is-invalid')
-                $subject.removeClass('is-invalid')
-                $email.removeClass('is-invalid')
-                $message.removeClass('is-invalid')            
-            }
+			var errors = validateFormFields(payload);
+			var validated = showFormErrors(errors);
+
+			if(!validated) {
+				return false;
+			}
             
             $.ajax({
                 type: "POST",
@@ -288,32 +291,52 @@
         })
     }
 	handleFormSubmit();
-	
-	// validateFormFields(payload) {
-
-	// }
 
     var validateFormFields = function(payload) {
-        var { name, subject, email, message } = payload;
+		var { name, subject, email, message } = payload;
+		console.log("Payload: ", payload)
         var nameRe = /^[a-zA-Z ]{2,50}$/;
         var subjectRe = /^[a-zA-Z ]{2,50}$/;
-        var emailRe =  /^([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22))*\x40([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d))*$/;
+        var emailRe =  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         var messageRe = /^[a-zA-Z ]{2,10000}$/;
         var errors = {};
         if(!nameRe.test(name)) {
-            errors.name = true;
+            errors.name = "Required";
         }
         if(!subjectRe.test(subject)) {
-            errors.subject = true;
+            errors.subject = "Required";
         }
         if(!emailRe.test(email)) {
-            errors.email = true;
+            errors.email = "Invalid Format";
         }
         if(!messageRe.test(message)) {
-            errors.message = true;
+            errors.message = "Required";
         }
         return errors;
-    }
+	}
+
+	var showFormErrors = function(errors, input) {
+		if(!$.isEmptyObject(errors)) {
+			for (var [key, value] of Object.entries(errors)) {
+				$("#"+key+"Field").addClass('is-invalid');
+				$("#"+key+"Error").html(value);
+			}
+			
+			return false;
+		}
+		else {
+			if(!input) {
+				$(".form-control").removeClass('is-invalid');    
+				$("small").html("")
+			}
+			else {
+				$(input).removeClass('is-invalid');
+				$(input).next().html('');
+			}
+			//return true;
+		}
+	}
+
 
 })(jQuery);
 
