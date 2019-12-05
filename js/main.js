@@ -235,30 +235,41 @@
 
     var handleFormSubmit = function() {
 
-        const form = $('#contactForm');
+        var $form = $('#contactForm');
+        var $submit = $('#submit');
+        var $name = $("#nameField");
+        var $email = $("#emailField");
+        var $subject = $("#subjectField");
+        var $message = $("#messageField");
 	    const url = 'https://jdhwr8oog1.execute-api.us-west-2.amazonaws.com/alpha/contact-us';
-	    const submit = $('#submit');
 	
-        form.on('submit', function (e) {
+        $form.on('submit', function (e) {
             e.preventDefault()
 
-            submit.disabled = true;
+            $submit.disabled = true;
             
-            var inputs = $(this).serializeArray();
-
-            var values = {};
-            $.each(inputs, function(k, v){
-                values[v.name] = v.value;
-            });
-
             const payload = {
-                name: values.name,
-                subject: values.subject,
-                email: values.email,
-                phone: values.phone,
-                message: values.message
+                name: $name.val(),
+                subject: $subject.val(),
+                email: $email.val(),
+                message: $message.val()
             }
 
+            var errors = validateFormFields(payload);
+            if(!$.isEmptyObject(errors)) {
+                var keys = Object.keys(errors);
+                keys.forEach(function(e) {
+                    $("#"+e+"Field").addClass('is-invalid');
+                })
+                return false;
+            }
+            else {
+                $name.removeClass('is-invalid')
+                $subject.removeClass('is-invalid')
+                $email.removeClass('is-invalid')
+                $message.removeClass('is-invalid')            
+            }
+            
             $.ajax({
                 type: "POST",
                 url : url,
@@ -268,7 +279,7 @@
                 data: JSON.stringify(payload),
                 success: function (response) {
                     $('#emailModal').modal('show');
-                    form.trigger('reset');
+                    $form.trigger('reset');
                 },
                 error: function (error) {
                     console.log(error);
@@ -277,6 +288,28 @@
         })
     }
     handleFormSubmit();
+
+    var validateFormFields = function(payload) {
+        var { name, subject, email, message } = payload;
+        var nameRe = /^[a-zA-Z ]{2,50}$/;
+        var subjectRe = /^[a-zA-Z ]{2,50}$/;
+        var emailRe =  /^([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22))*\x40([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d))*$/;
+        var messageRe = /^[a-zA-Z ]{2,10000}$/;
+        var errors = {};
+        if(!nameRe.test(name)) {
+            errors.name = true;
+        }
+        if(!subjectRe.test(subject)) {
+            errors.subject = true;
+        }
+        if(!emailRe.test(email)) {
+            errors.email = true;
+        }
+        if(!messageRe.test(message)) {
+            errors.message = true;
+        }
+        return errors;
+    }
 
 })(jQuery);
 
