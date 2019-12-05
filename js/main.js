@@ -266,12 +266,12 @@
                 message: $message.val().trim()
             }
 
-			var errors = validateFormFields(payload);
-			var validated = showFormErrors(errors);
+			// var errors = validateFormFields(payload);
+			// var validated = showFormErrors(errors);
 
-			if(!validated) {
-				return false;
-			}
+			// if(!validated) {
+			// 	return false;
+			// }
             
             $.ajax({
                 type: "POST",
